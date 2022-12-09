@@ -28,7 +28,7 @@ def calc_score(shape_a, action):
     score += action_to_value[action]
     return score
 
-INPUTFILE = "02a_input.txt"
+INPUTFILE = "02_input.txt"
 if __name__ == "__main__":
     total_score = 0
     with open(INPUTFILE) as file:
