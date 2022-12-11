@@ -28,7 +28,7 @@ def calc_score(shape_a, shape_b):
 INPUTFILE = "02a_input.txt"
 if __name__ == "__main__":
     total_score = 0
-    with open(INPUTFILE) as file:
-        for game in file:
+    with open(INPUTFILE) as f:
+        for game in f:
             total_score += calc_score(game[0], game[2])
     print(total_score)

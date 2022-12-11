@@ -41,8 +41,8 @@ def move_stacks(stacks, count, fro, to, reverse):
 if __name__ == "__main__":
     
     stacks = (cargo_to_stacks(CARGO))
-    with open(INPUT_FILE) as file:
-        for line in file:
+    with open(INPUT_FILE) as f:
+        for line in f:
             line=line[:-1]
             comm = line.split(" ")
             stacks = move_stacks(stacks, comm[1], comm[3], comm[5], False)

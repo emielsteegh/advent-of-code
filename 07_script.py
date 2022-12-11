@@ -5,10 +5,10 @@ from itertools import accumulate
 INPUT_FILE = "in.txt"
 if __name__ == "__main__":
     
-    with open(INPUT_FILE) as file:
+    with open(INPUT_FILE) as f:
         sys = defaultdict(int)
         curr = ['/']
-        for line in file:
+        for line in f:
             line=line[:-1]
             match (line.split(' ')):
                 case '$', 'cd', '/':

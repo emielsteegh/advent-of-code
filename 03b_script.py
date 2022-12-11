@@ -22,7 +22,7 @@ def calc_backpack_priority(*elves):
 INPUT_FILE = "in.txt"
 if __name__ == "__main__":
     total_priority = 0
-    with open(INPUT_FILE) as file:
-        for elf1,elf2,elf3 in itertools.zip_longest(*[file]*3):
+    with open(INPUT_FILE) as f:
+        for elf1,elf2,elf3 in itertools.zip_longest(*[f]*3):
             total_priority += calc_backpack_priority(elf1,elf2,elf3)
     print(total_priority)

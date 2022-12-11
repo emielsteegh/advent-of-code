@@ -4,8 +4,8 @@ INPUT_FILE = "in.txt"
 if __name__ == "__main__":
     full_overlap_pairs = 0
     overlap_pairs = 0
-    with open(INPUT_FILE) as file:
-        for pair in file:
+    with open(INPUT_FILE) as f:
+        for pair in f:
             pair=pair[:-1]
             elf1a, elf1b, elf2a, elf2b = [int(x) for x in re.split('[,-]', pair)]
 

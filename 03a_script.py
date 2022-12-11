@@ -20,8 +20,8 @@ def calc_backpack_priority(content):
 INPUT_FILE = "in.txt"
 if __name__ == "__main__":
     total_priority = 0
-    with open(INPUT_FILE) as file:
-        for line in file:
+    with open(INPUT_FILE) as f:
+        for line in f:
             line = line[:-1] # remove newline >:(
             total_priority += calc_backpack_priority(line)
     

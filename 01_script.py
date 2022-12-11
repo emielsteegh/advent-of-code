@@ -2,11 +2,11 @@
 INPUTFILE = "in.txt"
 
 
-def findMostCaloryElf(file_name):
+def findMostCaloryElf(f_name):
     current_elf = 0
     most_calories_elf = 0
-    with open(INPUTFILE) as file:
-        for food in file:
+    with open(INPUTFILE) as f:
+        for food in f:
             food = food[:-1]
             if not food.isnumeric():
                 if current_elf > most_calories_elf:
@@ -18,11 +18,11 @@ def findMostCaloryElf(file_name):
             most_calories_elf = current_elf
     return most_calories_elf
 
-def findMostCaloryElves(file_name, n):
+def findMostCaloryElves(f_name, n):
     current_elf = 0
     elves = []
-    with open(INPUTFILE) as file:
-        for food in file:
+    with open(INPUTFILE) as f:
+        for food in f:
             food = food[:-1]
             if not food.isnumeric():
                 elves.append(current_elf)

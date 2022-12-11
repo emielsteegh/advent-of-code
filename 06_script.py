@@ -3,8 +3,8 @@ INPUT_FILE = "in.txt"
 MARKER_LEN = 14
 if __name__ == "__main__":
     
-    with open(INPUT_FILE) as file:
-        for line in file:
+    with open(INPUT_FILE) as f:
+        for line in f:
             line=line[:-1]
             buffer = line[:MARKER_LEN-1]
             location = 1

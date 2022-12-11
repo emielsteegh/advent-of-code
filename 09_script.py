@@ -25,10 +25,10 @@ def move(d, steps, rope, v):
 INPUT_FILE = "in.txt"
 if __name__ == "__main__":
     
-    with open(INPUT_FILE) as file:
+    with open(INPUT_FILE) as f:
         rope = [np.array([0,0]) for _ in range(10)]
         v = {tuple(rope[8])} # visited
-        for line in file:
+        for line in f:
             line=line[:-1]
             rope, v = move(*line.split(" "), rope=rope, v=v)
         print(f"tail visited: {len(v)}")
