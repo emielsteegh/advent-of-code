@@ -1,6 +1,6 @@
 import numpy as np
 
-def move(d, steps, h, t, v): 
+def move(d, steps, rope, v): 
     match d:
         case 'U': d = [-1,0]
         case 'D': d = [1,0]
@@ -8,24 +8,27 @@ def move(d, steps, h, t, v):
         case 'R': d = [0,1]
     
     for _ in range(int(steps)):
-        h += d # move head
-        delta = h - t # difference from tail to head
+        rope[0] += d # move head
+        for seg in range(1,len(rope)):
+            delta = rope[seg-1] - rope[seg] # difference from segment to one ahead
 
-        if np.abs(delta).max() >= 2: # no longer touching
-            t += np.clip(delta,-1,1) # clip to make max step in any 4-dir one
-            v.add(tuple(t)) # add new tail location to visited
+            if np.abs(delta).max() >= 2: # no longer touching
+                rope[seg] += np.clip(delta,-1,1) # clip to make max step in any 4-dir one
+                if seg == len(rope)-1: # check if the tail end moved
+                    v.add(tuple(rope[seg]))
+            else:
+                break # part did not move, it's tail wont either
 
-    return h, t, v
+    return rope, v
     
 
 INPUT_FILE = "09_input.txt"
 if __name__ == "__main__":
     
     with open(INPUT_FILE) as file:
-        h = np.array([0,0]) # location head
-        t = np.array([0,0]) # location tail
-        v = {tuple(t)} # visited
+        rope = [np.array([0,0]) for _ in range(10)]
+        v = {tuple(rope[8])} # visited
         for line in file:
             line=line[:-1]
-            h, t, v = move(*line.split(" "), h=h, t=t, v=v)
-        print(f"head {tuple(h)}\ntail {tuple(t)}\ntail visited: {len(v)}")
+            rope, v = move(*line.split(" "), rope=rope, v=v)
+        print(f"tail visited: {len(v)}")
