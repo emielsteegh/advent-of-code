@@ -1,6 +1,6 @@
 import re
 
-INPUT_FILE = "04_input.txt"
+INPUT_FILE = "in.txt"
 if __name__ == "__main__":
     full_overlap_pairs = 0
     overlap_pairs = 0

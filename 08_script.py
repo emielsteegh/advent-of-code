@@ -1,6 +1,6 @@
 import numpy as np
 
-INPUT_FILE = "08_input.txt"
+INPUT_FILE = "in.txt"
 
 def tree_visible_and_scene(grid, x, y):
     if x*y == 0 \

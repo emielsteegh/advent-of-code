@@ -1,5 +1,5 @@
 # import
-INPUTFILE = "01_input.txt"
+INPUTFILE = "in.txt"
 
 
 def findMostCaloryElf(file_name):

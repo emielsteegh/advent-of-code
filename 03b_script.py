@@ -19,7 +19,7 @@ def calc_backpack_priority(*elves):
     
     return backpack_priority
 
-INPUT_FILE = "03_input.txt"
+INPUT_FILE = "in.txt"
 if __name__ == "__main__":
     total_priority = 0
     with open(INPUT_FILE) as file:

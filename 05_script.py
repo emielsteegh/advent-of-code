@@ -1,6 +1,6 @@
 
 
-INPUT_FILE = "05_input.txt"
+INPUT_FILE = "in.txt"
 CARGO= """    [B]             [B] [S]        
     [M]             [P] [L] [B] [J]
     [D]     [R]     [V] [D] [Q] [D]

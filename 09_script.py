@@ -22,7 +22,7 @@ def move(d, steps, rope, v):
     return rope, v
     
 
-INPUT_FILE = "09_input.txt"
+INPUT_FILE = "in.txt"
 if __name__ == "__main__":
     
     with open(INPUT_FILE) as file:

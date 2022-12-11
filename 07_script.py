@@ -2,7 +2,7 @@ from collections import defaultdict
 from itertools import accumulate
 
 
-INPUT_FILE = "07_input.txt"
+INPUT_FILE = "in.txt"
 if __name__ == "__main__":
     
     with open(INPUT_FILE) as file:

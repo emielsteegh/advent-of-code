@@ -1,5 +1,5 @@
 
-INPUT_FILE = "06_input.txt"
+INPUT_FILE = "in.txt"
 MARKER_LEN = 14
 if __name__ == "__main__":
     
