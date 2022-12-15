@@ -12,12 +12,6 @@ if __name__ == "__main__":
             elf1 = set(range(elf1a,elf1b+1))
             elf2 = set(range(elf2a,elf2b+1))
 
-            # if (
-            #     ((elf1a<=elf2a<=elf1b) and (elf1a<=elf2b<=elf1b))
-            #     or
-            #     ((elf2a<=elf1a<=elf2b) and (elf2a<=elf1b<=elf2b))
-            # ):
-            #     overlap_pairs += 1
             
             if (elf1.issubset(elf2) or elf2.issubset(elf1)):
                 full_overlap_pairs += 1
