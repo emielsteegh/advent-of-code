@@ -1,6 +1,3 @@
-
-
-INPUT_FILE = "in.txt"
 CARGO= """    [B]             [B] [S]        
     [M]             [P] [L] [B] [J]
     [D]     [R]     [V] [D] [Q] [D]
@@ -12,6 +9,7 @@ CARGO= """    [B]             [B] [S]
  1   2   3   4   5   6   7   8   9 """
 
 def cargo_to_stacks(cargo):
+    # turns the cargo code into neat dicts
     cargo = cargo.split('\n')
     cargo.reverse()
     stacks = {}
@@ -37,20 +35,19 @@ def move_stacks(stacks, count, fro, to, reverse):
     return(stacks)
 
 
-
+INPUT_FILE = "input/05.txt"
 if __name__ == "__main__":
     
-    stacks = (cargo_to_stacks(CARGO))
+    part1 = cargo_to_stacks(CARGO)
+    part2 = cargo_to_stacks(CARGO)
+
     with open(INPUT_FILE) as f:
         for line in f:
             line=line[:-1]
             comm = line.split(" ")
-            stacks = move_stacks(stacks, comm[1], comm[3], comm[5], False)
+            part1 = move_stacks(part1, comm[1], comm[3], comm[5], reverse=True)
+            part2 = move_stacks(part2, comm[1], comm[3], comm[5], reverse=False)
     
-    top_crates = ""
-    for stack in stacks.values():
-        top_crates += stack[-1]
-    print(top_crates)
-
-# MQSHJMWNH
-# LLWJRBHVZ
+    tops = lambda x: print("".join([s[-1] for s in x.values()]))
+    tops(part1)
+    tops(part2)
