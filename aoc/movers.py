@@ -13,16 +13,17 @@ def save(day, year, clear):
     # move file to year/in/day.txt
     from shutil import copyfile
 
-    src_in = "in.txt"
-    dst_in = join(year, "in", f"{day}.txt")
-    copyfile(src_in, dst_in)
-    src_in = "now.py"
-    dst_in = join(year, f"{day}.py")
-    copyfile(src_in, dst_in)
+    script_src = "now.py"
+    script_dst = join(year, f"{day}.py")
+    copyfile(script_src, script_dst)
+     
+    text_src = "now.txt"
+    text_dst = join(year, "in", f"{day}.txt")
+    copyfile(text_src, text_dst)
     # empty file
     if clear:
-        open(src_in, 'w').close()
-        open(src, 'w').close()
+        open(script_src, 'w').close()
+        open(text_dst, 'w').close()
 
 @cli.command()
 @click.argument('day')
