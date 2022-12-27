@@ -6,7 +6,7 @@ NOWPY = "now.py"
 NOWIN = "now.txt"
 
 
-def lines():
+def lines(as_list=True):
     '''
     based on the path of the calling script (not this one),
     returns the input of the matching advent of code day as lines
@@ -27,22 +27,27 @@ def lines():
         fname = join(caller[-2], "in", caller[-1][:-2]+"txt")
         pass
     f = open(fname, "r")
-    lines = f.readlines()
-    lines = [line.rstrip() for line in lines]
+    if as_list:
+        lines = f.readlines()
+        lines = [line.rstrip() for line in lines]
+    else:
+        lines = f.read()
     return lines
 
-def numbers(delimiter:str='.'):
+
+def string_to_numbers(s:str, delimiter:str=','):
+    # start with or without -, <0 digits, with or without a single delmiter character followed by <0 digits
+    re_numbers = re.compile(f'(-?\d+(?:\{delimiter}\d+)?)')
+    
+    if delimiter not in ['.', ',']: raise Exception("Delimiter must be ',' or '.' ")
+    numbers_in_string = [int(x) for x in re.findall(re_numbers, s)]
+    return numbers_in_string
+
+def numbers(delimiter:str=','):
     '''takes the appropriate input to a script,
      uses simple regex to convert them to a list of numbers per line'''
-    # start with or without -, <0 digits, with or without a single delmiter character followed by <0 digits
-    if delimiter not in ['.', ',']: raise Exception("Delimiter must be ',' or '.' ")
-    re_numbers = re.compile(f'(-?\d+(?:\{delimiter}\d+)?)')
-    print(re_numbers)
     
-    # returns all lines as a list of the numbers in it
     ls = lines()
-
-    print([re.findall(re_numbers,line) for line in ls])
-
-    numbers = [[int(x) for x in re.findall(re_numbers,line)] for line in ls]
+    # returns all lines as a list of the numbers in it
+    numbers = [string_to_numbers(s=line, delimiter=delimiter) for line in ls]
     return numbers
