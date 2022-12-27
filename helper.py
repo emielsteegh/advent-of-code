@@ -26,7 +26,7 @@ def cli():
 @click.option('-d', '--day', 'day', type=int, prompt=True, help="| AoC day  | prompted")
 @click.option('-y', '--year', 'year', type=int, default=None, help="| AoC year | defaults to highest year available")
 def old(day, year):
-    year = get_year_or_default_year
+    year = get_year_or_default_year(year=year)
     # run the correct script by importing it
     __import__(f"{year}.{int(day):02}")
 
@@ -38,7 +38,7 @@ def old(day, year):
 @click.option('-C', 'clear', is_flag=True, help="Clear the now files")
 def save(day, year, force, clear):
     """move file to archive"""
-    year = get_year_or_default_year
+    year = get_year_or_default_year(year=year)
     helpers.if_exists(day, year, force)
 
     from shutil import copyfile
@@ -51,8 +51,10 @@ def save(day, year, force, clear):
 
     if clear:
         # TODO probably better to copy a template file
-        open(script_src, 'w').close()
-        open(text_dst, 'w').close()
+        f = open(script_src, 'w')
+        f.write("from aoc import *\n\n")
+        f.close()
+        open(text_src, 'w').close()
 
 
 @cli.command()
