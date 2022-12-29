@@ -37,17 +37,18 @@ def lines(as_list=True):
 
 def string_to_numbers(s:str, delimiter:str=','):
     # start with or without -, <0 digits, with or without a single delmiter character followed by <0 digits
-    re_numbers = re.compile(f'(-?\d+(?:\{delimiter}\d+)?)')
+    if delimiter not in ['.', ',', None]: raise Exception("Delimiter must be ',' or '.' or None")
+
+    re_numbers = re.compile(f'(-?\d+(?:\{delimiter}\d+)?)' if delimiter != None else f'(-?\d+)')
     
-    if delimiter not in ['.', ',']: raise Exception("Delimiter must be ',' or '.' ")
     numbers_in_string = [int(x) for x in re.findall(re_numbers, s)]
     return numbers_in_string
 
-def numbers(delimiter:str=','):
+def numbers(delimiter:str=',', keep_empty=True):
     '''takes the appropriate input to a script,
      uses simple regex to convert them to a list of numbers per line'''
     
     ls = lines()
     # returns all lines as a list of the numbers in it
-    numbers = [string_to_numbers(s=line, delimiter=delimiter) for line in ls]
+    numbers = [string_to_numbers(s=line, delimiter=delimiter) for line in ls if (keep_empty or line != '')]
     return numbers
