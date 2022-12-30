@@ -41,7 +41,7 @@ def string_to_numbers(s:str, delimiter:str=','):
 
     re_numbers = re.compile(f'(-?\d+(?:\{delimiter}\d+)?)' if delimiter != None else f'(-?\d+)')
     
-    numbers_in_string = [int(x) for x in re.findall(re_numbers, s)]
+    numbers_in_string = [(float(x) if delimiter != None else int(x)) for x in re.findall(re_numbers, s)]
     return numbers_in_string
 
 def numbers(delimiter:str=',', keep_empty=True):
