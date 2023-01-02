@@ -3,22 +3,18 @@ from itertools import product as iterproduct
 from dataclasses import dataclass
 
 
+@dataclass(frozen=True)
 class Horizontal:
-    __slots__ = ('x1', 'x2', 'y')
-
-    def __init__(self, x1, x2, y) -> None:
-        self.x1 = x1
-        self.x2 = x2
-        self.y = y
+    x1: int
+    x2: int
+    y: int
 
 
+@dataclass(frozen=True)
 class Vertical:
-    __slots__ = ('y1', 'y2', 'x')
-
-    def __init__(self, y1, y2, x) -> None:
-        self.y1 = y1
-        self.y2 = y2
-        self.x = x
+    y1: int
+    y2: int
+    x: int
 
 
 @dataclass(frozen=True)
@@ -26,10 +22,6 @@ class Point:
     """Immutable class that tracks x,y-points"""
     x: int
     y: int
-
-    # def __iadd__(self, other):
-    #     self.x += other.x
-    #     self.y += other.y
 
     def __add__(self, other):
         return(Point(self.x + other.x, self.y + other.y))
@@ -40,17 +32,19 @@ class Point:
         dy = abs(self.y - other.y)
         return dx+dy
 
-    def rotate(self, cw=True):
-        if cw:
+    def rotate(self, ccw=False):
+        if not ccw:
             # Rotate by 45 degrees and scale by √2
             return Point(self.x - self.y, self.x + self.y)
         else:
             # Rotate by -45 degrees and scale by √2
-            return Point(self.x + self.y, self.y - self.x)
+            return Point((self.x + self.y)/2, (self.y - self.x)/2)
 
 
 def intersect(h: Horizontal, v: Vertical):
-    if (v.y1 < h.y < v.y2) and (h.x1 < v.x < h.x2):
+    if (v.y1 < h.y < v.y2) and (h.x1 < v.x < h.x2):  # no <= because corners are already included
+        # h.y > v.y1 && h.y < v.y2
+        #  h.x1 < v.x && h.x2 > v.x
         return Point(v.x, h.y)
 
 
@@ -83,7 +77,7 @@ for x1, y1, x2, y2 in lines:
     # https://www.reddit.com/r/adventofcode/comments/zmcn64/comment/j0d1eu8/
     # It comes down to rotating the whole thing by 45deg so we can deal with
     # straight squares and looking for the single point that is bounded by
-    # four intersections
+    # four intersections (point of interests)
 
     tl = (sensor + Point(-reach, 0)).rotate()
     tr = (sensor + Point(0, -reach)).rotate()
@@ -94,8 +88,8 @@ for x1, y1, x2, y2 in lines:
 
     hors.add(Horizontal(tl.x, tr.x, tr.y))
     hors.add(Horizontal(bl.x, br.x, br.y))
-    vers.add(Vertical(tl.y, bl.y, bl.x))
-    vers.add(Vertical(tr.y, br.y, br.x))
+    vers.add(Vertical(tl.y, bl.y, tl.x))
+    vers.add(Vertical(tr.y, br.y, tr.x))
 
     # print(f"{x1},{y1},{x2},{y2}, -> {reach}")
 
@@ -127,16 +121,20 @@ for (hor, ver) in iterproduct(hors, vers):
         poi.add(point)
 
 part2_gen = (
-    p for p in poi if (
-        (p + Point(2, 0)) in poi and
-        (p + Point(0, 2)) in poi and
-        (p + Point(2, 2)) in poi
+    p for p in poi if (                 # x      x 1
+        (p + Point(2, 0)) in poi and    # 1 ->    P
+        (p + Point(0, 2)) in poi and    # 2      2 3
+        (p + Point(2, 2)) in poi        # 3
     ))
+
 part2_point = next(part2_gen, None)
-part2_point = (part2_point + Point(1, 1)).rotate(cw=True)
+part2_point = (part2_point + Point(1, 1)).rotate(ccw=True)  # P
+part2 = int(4_000_000 * (part2_point.x) + (part2_point.y))  # /2 offsets 2 * √2
 
-part2 = 4_000_000 * (part2_point.x / 2) + (part2_point.y / 2)
-# print(part1)
+# this approach could find points in overlapping sensor corners like s  <o>  s
+# could be remedied by finding the next point, checking if it is within a sensor's bounds
+# if so find the next, otherwise we got the one
+# but there's only one point in my input anyway so no need for abstraction
 
-print(part2_point)
-print(part2)
+print(part1)  # 6425133
+print(part2)  # 10996191429555
