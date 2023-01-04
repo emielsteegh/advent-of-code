@@ -50,9 +50,9 @@ def string_to_numbers(s: str, delimiter: str = ","):
     return numbers_in_string
 
 
-def timer(func):
+def timed(func):
     @wraps(func)
-    def timer_wrapper(*args, **kwargs):
+    def timed_wrapper(*args, **kwargs):
         pre = time.perf_counter()
         result = func(*args, **kwargs)
         post = time.perf_counter()
@@ -62,4 +62,4 @@ def timer(func):
         )
         return result
 
-    return timer_wrapper
+    return timed_wrapper
