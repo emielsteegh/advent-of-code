@@ -1,6 +1,8 @@
 from aoc import *
 from itertools import product as iterproduct
 from collections import defaultdict
+import re
+
 
 # ! today: dynamic programming with memoization
 
@@ -33,35 +35,38 @@ def dv_to_bit(d, as_str=False):
 
 
 memo = defaultdict(lambda: 0)  # stores (time, opened as int)
+valves = list(rates.keys())  # list of keys, disregard the empty ones
+opened = int("".join(["0" for node in valves]), 2)
+all_opened = int("".join(["1" for node in valves]), 2)
 
 
-def find_max_pressure(time, cur, opened_dict, m=defaultdict(lambda: 0)):
+def find_max_pressure_faster(time, cur, opened, m=defaultdict(lambda: 0)):
 
     # loop over all the unopened valves
-    for valve in [n for n, o in opened_dict.items() if not o]:
-        opened_bit = dv_to_bit(opened_dict)
+    for next_valve_key, next_valve_name in enumerate(valves):
+        if opened & (1 << next_valve_key):  # get bit
+            continue
 
-        cost = dists[cur, valve] + 1
-        if cost > time:
+        time_cost = dists[cur, next_valve_name] + 1
+        if time_cost > time:
             # this means all plays have been made at this path, save at time=0 (end)
-            memo[0, opened_bit] = max(memo[0, opened_bit], memo[time, opened_bit])
+            memo[0, opened] = max(memo[0, opened], memo[time, opened])
             continue
         else:
-            next_time = time - cost
-            pressure_out = next_time * rates[valve]
-            next_opened_dict = opened_dict.copy()
-            next_opened_dict[valve] = True
-            next_opened_bit = dv_to_bit(next_opened_dict)
+            next_time = time - time_cost
+            pressure_out = next_time * rates[next_valve_name]
+            next_opened = opened | (1 << next_valve_key)
 
             # update the memo
-            next_pressure = pressure_out + memo[time, opened_bit]
-            next_memo = max(memo[next_time, next_opened_bit], next_pressure)
-            memo[next_time, next_opened_bit] = next_memo
+            next_pressure = max(
+                memo[next_time, next_opened], pressure_out + memo[time, opened]
+            )
+            memo[next_time, next_opened] = next_pressure
 
-            if all(next_opened_dict.values()):
-                memo[0, next_opened_bit] = next_memo
+            if next_opened == all_opened:
+                memo[0, next_opened] = next_pressure
             else:
-                find_max_pressure(next_time, valve, next_opened_dict)
+                find_max_pressure_faster(next_time, next_valve_name, next_opened)
 
 
 # find_max_pressure(30, 'AA', opened_dict=opened)
@@ -70,9 +75,10 @@ def find_max_pressure(time, cur, opened_dict, m=defaultdict(lambda: 0)):
 
 part2 = 0
 x, y = None, None
-find_max_pressure(26, "AA", opened_dict=opened)
-
+timed(find_max_pressure_faster(26, "AA", opened))
 pressures = [(time_open[1], pressure) for time_open, pressure in memo.items()]
+pressures = sorted(pressures, key=lambda x: x[1])[-200:]
+
 for a, b in iterproduct(pressures, pressures):
     if a[0] & b[0] == 0:
         if a[1] + b[1] > part2:
