@@ -94,19 +94,16 @@ def find_all_pressures(time, cur, opened, memo=defaultdict(lambda: 0)):
 
 part1 = find_max_pressure(30, "AA", opened)
 
-
-part2 = 0
+# for part 2 we find the two sets of opened valves with the largest sum that dont intersect
 pressures = find_all_pressures(26, "AA", opened)
-pressures = [
-    (time_open[1], pressure)
-    for time_open, pressure in pressures.items()
-    if time_open[0] == 0
+pressures = [(time_opened[1], pressure) for time_opened, pressure in pressures.items()]
+pressures = sorted(pressures, key=lambda x: x[1])[
+    -len(pressures) // 20 :  # take top 5%
 ]
-pressures = sorted(pressures, key=lambda x: x[1])[-200:]
-
+part2 = 0
 for a, b in iterproduct(pressures, pressures):
-    if a[0] & b[0] == 0:
+    if a[0] & b[0] == 0:  # returns 0 only if there are no overlapping 1 bits
         part2 = max(part2, a[1] + b[1])
 
-print(part2)  # 1707
-print(part1)  # 2504
+print(part1)  # 1707
+print(part2)  # 2504
